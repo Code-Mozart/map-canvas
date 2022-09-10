@@ -21,6 +21,8 @@ const DEFAULT_TEXT_COL = getComputedStyle(document.documentElement).getPropertyV
 const canvasElement = document.querySelector("canvas")
 const controlsAreaElement = document.querySelector("div")
 
+const newMapDialogElement = document.getElementById("new-map-dialog")
+
 
 // INITIALIZATION
 
@@ -224,11 +226,26 @@ class Map {
     constructor(width, height) {
         this.width = width
         this.height = height
+		this.heightMap = new Int16Array(width * height)
+
+		for (let i = 0; i < this.heightMap.length; i++) {
+			this.heightMap[i] = (Math.random() - 0.5) * 0xFFFF
+		}
     }
 
     draw() {
-        ScreenDraw.drawText("New map created", "centered", DEFAULT_TEXT_COL, "20pt")
+		for (let y = 0; y < this.height; y++) {
+			for (let x = 0; x < this.width; x++) {
+				const v = ((this.heightMap[this.toIndex(x, y)] + 0x8000) / 0xFFFF) * 255
+				WorldDraw.fillRect({x: x - this.width / 2, y: y - this.height / 2},
+					1, 1, `rgb(${v}, ${v}, ${v})`)
+			}
+		}
     }
+
+	toIndex(x, y) {
+		return y * this.width + x
+	}
 }
 
 
@@ -241,7 +258,7 @@ const mouse = {
 }
 
 let cam = new Camera()
-cam.zoom = 1.0
+cam.zoom = 5.0
 
 const NoMap = {
     draw: function() {
@@ -258,7 +275,15 @@ let map = NoMap
 // HTML CALLBACKS
 
 function onNewMap() {
-    map = new Map(100, 100)
+	newMapDialogElement.showModal()
+}
+
+function createNewMap() {
+	newMapDialogElement.close()
+    map = new Map(
+		newMapDialogElement.querySelector("#map-width-number-field").valueAsNumber,		
+		newMapDialogElement.querySelector("#map-height-number-field").valueAsNumber
+	)
 }
 
 
