@@ -11,6 +11,10 @@ author: Codemozart
 
 const BASE_URL = "https://localhost"
 
+const DEFAULT_FONT_FAMILY = "Georgia"
+const DEFAULT_FONT_SIZE = "12px"
+const DEFAULT_TEXT_COL = getComputedStyle(document.documentElement).getPropertyValue('--default-fg-color')
+
 
 // HTML ELEMENTS
 
@@ -88,6 +92,11 @@ canvasElement.addEventListener("mouseup", (e) => {
 
 // DRAW HELPERS
 
+function getTextHeight(text) {
+    const metrics = canvas.measureText(text)
+    return metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent
+}
+
 const ScreenDraw = {
 	drawLine: function(start, end, color, width = 1.0) {
 		canvas.save()
@@ -164,7 +173,32 @@ const ScreenDraw = {
 
 	drawImg: function(img, screen = { x: 0, y: 0 }, width = img.width, height = img.height) {
 		canvas.drawImage(img, screen.x, screen.y, width, height)
-	}
+	},
+
+    drawText: function(text, screen, color = DEFAULT_TEXT_COL, size = DEFAULT_FONT_SIZE) {
+        canvas.save()
+        
+        canvas.font = size + " " + DEFAULT_FONT_FAMILY
+        canvas.fillStyle = color
+
+        lines = text.split("\n")
+        lineHeights = lines.map(line => getTextHeight(line))
+        totalTextHeight = lineHeights.reduce((acc, lineHeight) => acc + lineHeight, 0)
+        let y = canvasElement.height / 2 - (totalTextHeight / 2)
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i]
+            if (screen == "centered") {
+                canvas.textAlign = "center"
+                canvas.fillText(line, canvasElement.width / 2, y);
+            }
+            else {
+                canvas.fillText(line, screen.x, screen.y);
+            }
+            y += lineHeights[i]
+        }
+        
+    	canvas.restore()
+    }
 }
 
 const WorldDraw = {
@@ -184,6 +218,20 @@ const WorldDraw = {
 }
 
 
+// MODELS
+
+class Map {
+    constructor(width, height) {
+        this.width = width
+        this.height = height
+    }
+
+    draw() {
+        ScreenDraw.drawText("New map created", "centered", DEFAULT_TEXT_COL, "20pt")
+    }
+}
+
+
 // OBJECTS
 
 const mouse = {
@@ -195,6 +243,24 @@ const mouse = {
 let cam = new Camera()
 cam.zoom = 1.0
 
+const NoMap = {
+    draw: function() {
+        ScreenDraw.drawText(
+            "No map displayed\n" + "Either load an existing map or create a new one",
+            "centered", "rgb(231, 125, 121)", "20pt"
+        )
+    }
+}
+
+let map = NoMap
+
+
+// HTML CALLBACKS
+
+function onNewMap() {
+    map = new Map(100, 100)
+}
+
 
 // RUN
 
@@ -205,8 +271,7 @@ function draw() {
 	// clear
     ScreenDraw.fillRect({ x: 0, y: 0 }, canvasElement.width, canvasElement.height, canvasElement.color)
     
-    // draw sample
-    WorldDraw.fillCircle({x: 0, y: 0}, 3, "rgb(200, 200, 200)")
+    map.draw();
 }
 
 function loop() {

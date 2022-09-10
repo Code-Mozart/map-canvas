@@ -16,7 +16,7 @@
         background-color: var(--default-bg-color);
 
         font-size: 12pt;
-        font-family:Georgia, 'Times New Roman', Times, serif;
+        font-family: Georgia, 'Times New Roman', Times, serif;
         font-weight: 300;
         color: var(--default-fg-color);
         
@@ -44,11 +44,19 @@
 
         background-color: var(--alt-bg-color);
     }
-    h4 {
+    canvas {
+        color: var(--default-fg-color);
+    }
+    h1, h2, h3, h4 {
         margin: 3px;
         padding: 0;
-
+    }
+    h4 {
         color: var(--weak-fg-color);
+    }
+    input {
+        margin: 2px;
+        width: 100%;
     }
 </style>
 
@@ -57,8 +65,36 @@
     </head>
     <body class="row">
         <canvas class="left-column"></canvas>
-        <div name="controls" class="right-column">
+        <div name="controls-container" class="right-column">
             <h4>Map Canvas v0.1.0</h4>
+            <h1>Controls</h1>
+            <div name="controls" class="max-height">
+                <input value="New map"
+                       type="button"
+                       onclick="onNewMap();" />
+
+                <input type="file"
+                       id="load-map-file-input"
+                       style="display:none;"
+                       onclick="onLoadMap()" />
+                <input value="Load map..."
+                       disabled="true"
+                       title="Coming soon..."
+                       type="button"
+                       onclick="document.getElementById('load-map-file-input').click();" />
+
+                <!-- Should remove the "..." as soon as a path was specified -->
+                <input value="Save map..."
+                       disabled="true"
+                       title="Coming soon..."
+                       type="button"
+                       onclick="onSaveMap();" />
+                <input value="Export map..."
+                       disabled="true"
+                       title="Coming soon..."
+                       type="button"
+                       onclick="onExportMap();" />
+            </div>
         </div>
     </body>
 
