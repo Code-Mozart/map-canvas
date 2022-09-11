@@ -302,7 +302,7 @@ class Map {
 		this.heightMap = new Int16Array(width * height)
 
 		for (let i = 0; i < this.heightMap.length; i++) {
-			this.heightMap[i] = 0.5 + ((Math.random() - 0.5) * (0xFFFF / 20))
+			this.heightMap[i] = 0.5 + ((Math.random() - 0.5) * (0xFFFF / 100))
 		}
     }
 
@@ -403,8 +403,8 @@ cam.zoom = 5.0
 const NoMap = {
     draw: function() {
         ScreenDraw.drawText(
-            "No map displayed\n" + "Either load an existing map or create a new one",
-            "centered", "rgb(231, 125, 121)", "20pt"
+            "No map to display\n" + "Either load an existing map or create a new one",
+            "centered", "rgb(231, 125, 121)", "16pt"
         )
     }
 }
@@ -435,6 +435,7 @@ function createNewMap() {
 		newMapDialogElement.querySelector("#map-width-number-field").valueAsNumber,		
 		newMapDialogElement.querySelector("#map-height-number-field").valueAsNumber
 	)
+	cam.world = {x: 0, y: 0}
 }
 
 
