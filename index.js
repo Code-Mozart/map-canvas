@@ -146,21 +146,21 @@ canvasElement.addEventListener("mouseup", (e) => {
 
 document.addEventListener("keypress", (e) => {
 	switch (e.key) {
-		case "+":	cam.zoomIn();	break;
-		case "-":	cam.zoomOut();	break;
-		case " ":	changeMode();	break;
+		case zoomInKey:			cam.zoomIn();		break;
+		case zoomOutKey:		cam.zoomOut();		break;
+		case changeModeKey:		changeMode();		break;
 	}
 })
 
 document.addEventListener("keydown", (e) => {
 	switch (e.key) {
-		case "Shift":	drawMethod = DrawMethods.Normal;	break;
+		case changeViewKey:		drawMethod = DrawMethods.Normal;	break;
 	}
 })
 
 document.addEventListener("keyup", (e) => {
 	switch (e.key) {
-		case "Shift":	drawMethod = DrawMethods.Height;	break;
+		case changeViewKey:		drawMethod = DrawMethods.Height;	break;
 	}
 })
 
@@ -421,6 +421,14 @@ const DrawMethods = {
 	Normal: "normal"
 }
 let drawMethod = DrawMethods.Height
+
+
+// KEYMAP
+
+let zoomInKey = "+"
+let zoomOutKey = "-"
+let changeModeKey = " "
+let changeViewKey = "v"
 
 
 // HTML CALLBACKS

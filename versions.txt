@@ -1,0 +1,19 @@
+MAP CANVAS - development versions
+v0.1.0
+
+=>  0.1 Initial setup: pan, zoom, new map feature, simple sphere drawing,
+        normal or heights view
+    0.2 Map Update:
+        0.2.1   Loading and saving maps
+        0.2.2   Importing and exporting maps
+        0.2.3   Map info UI and more map meta informations:
+                name, creation date, last edit date
+    0.3 Canvas Update:
+        0.3.1   Radius and strength settings and UI
+        0.3.2   Brushes including Simplex Noise brush
+        0.3.3   Hydraulic erosion
+    0.4 Performance Update:
+        0.4.1   Chunks and chunk rendering
+                    [note:  could be done by first drawing on an image and
+                            then just rendering the image (Olc::PGE) or by
+                            assigning an image to each chunk individually]
