@@ -124,18 +124,18 @@
                 <br />
 
                 <input type="file"
+                       accept=".cmap.json"
                        id="load-map-file-input"
                        style="display:none;"
                        onclick="onLoadMap()" />
                 <input value="Load map..."
-                       disabled="true"
-                       title="Coming soon..."
                        type="button"
                        onclick="document.getElementById('load-map-file-input').click();" />
                 <br />
 
                 <!-- Should remove the "..." as soon as a path was specified
                         THIS MIGHT NOT BE ALLOWED BY BROWSERS!!
+                    Display a "*" when changes were made
                 -->
                 <a id="save-map-file-link"
                    style="display: none;" ></a>

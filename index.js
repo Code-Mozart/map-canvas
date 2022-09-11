@@ -28,6 +28,7 @@ const controlsAreaElement = document.querySelector("div")
 const newMapDialogElement = document.getElementById("new-map-dialog")
 const saveMapButton = document.getElementById("save-map-button")
 const saveMapLinkElement = document.getElementById("save-map-file-link")
+const loadMapFileInputElement = document.getElementById("load-map-file-input")
 
 
 // INITIALIZATION
@@ -300,7 +301,16 @@ const WorldDraw = {
 // MODELS
 
 class Map {
-    constructor(width, height) {
+    constructor(arg1, arg2) {
+		if (arg2 === undefined) {
+			this.initializeFromJSON(arg1)
+		}
+		else {
+			this.initializeFromSize(arg1, arg2)
+		}
+    }
+
+	initializeFromSize(width, height) {
         this.width = width
         this.height = height
 		this.heightMap = new Int16Array(width * height)
@@ -308,7 +318,13 @@ class Map {
 		for (let i = 0; i < this.heightMap.length; i++) {
 			this.heightMap[i] = 0.5 + ((Math.random() - 0.5) * (0xFFFF / 100))
 		}
-    }
+	}
+
+	initializeFromJSON(json) {
+		this.width = json.map.width
+		this.height = json.map.height
+		this.heightMap = Int16Array.from(json.map.heightMap)
+	}
 
 	draw() {
 		switch (drawMethod) {
@@ -475,6 +491,16 @@ function onSaveMap() {
 	if (URL.revokeObjectURL) {
     	URL.revokeObjectURL(url)
 	}
+}
+
+function onLoadMap() {
+	const file = loadMapFileInputElement.files[0]
+	reader = new FileReader()
+	reader.addEventListener("load", () => {
+		saveMapButton.disabled = false
+		map = new Map(JSON.parse(reader.result))
+	})
+	reader.readAsText(file)
 }
 
 
