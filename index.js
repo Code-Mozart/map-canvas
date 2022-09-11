@@ -26,6 +26,8 @@ const canvasElement = document.querySelector("canvas")
 const controlsAreaElement = document.querySelector("div")
 
 const newMapDialogElement = document.getElementById("new-map-dialog")
+const saveMapButton = document.getElementById("save-map-button")
+const saveMapLinkElement = document.getElementById("save-map-file-link")
 
 
 // INITIALIZATION
@@ -36,6 +38,8 @@ const canvas = canvasElement.getContext("2d")
 
 const defaultBorderColor = getComputedStyle(canvasElement).borderColor
 const defaultBorderWidth = getComputedStyle(canvasElement).borderWidth
+
+saveMapButton.disabled = true
 
 
 // HELPERS
@@ -360,6 +364,16 @@ class Map {
 	toIndex(x, y) {
 		return Math.floor(y + (this.height / 2)) * this.width + Math.floor(x + (this.width / 2))
 	}
+
+	toPersistable() {
+		return {
+			map: {
+				width: this.width,
+				height: this.height,
+				heightMap: Array.from(this.heightMap)
+			}
+		}
+	}
 }
 
 
@@ -439,11 +453,28 @@ function onNewMap() {
 
 function createNewMap() {
 	newMapDialogElement.close()
+	saveMapButton.disabled = false
+
     map = new Map(
 		newMapDialogElement.querySelector("#map-width-number-field").valueAsNumber,		
 		newMapDialogElement.querySelector("#map-height-number-field").valueAsNumber
 	)
 	cam.world = {x: 0, y: 0}
+}
+
+function onSaveMap() {
+	// from https://gist.github.com/romgrk/40c89ba3cd077c4f4f42b63ddcf20735
+	const fileBlob = new Blob([JSON.stringify(map.toPersistable())], {type: 'application/json'})
+	const url = URL.createObjectURL(fileBlob)
+	
+	saveMapLinkElement.setAttribute('href', url)
+	saveMapLinkElement.setAttribute('download', "myCanvasMap.cmap.json")
+
+	saveMapLinkElement.click()
+
+	if (URL.revokeObjectURL) {
+    	URL.revokeObjectURL(url)
+	}
 }
 
 
