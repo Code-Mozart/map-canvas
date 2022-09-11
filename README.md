@@ -6,7 +6,7 @@ a set of brushes to draw directly on the map. It will also be possible to simula
 to get more realistic terrain.
 
 ## Versioning
-The current version is ```v0.1.0``` Each version will be available in its respective branch.
+The current version is ```v0.2.2``` Each version will be available in its respective branch.
 
 ## Installation
 Simply download/clone this repository.

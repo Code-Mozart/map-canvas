@@ -1,11 +1,11 @@
 MAP CANVAS - development versions
-v0.2.1
+v0.2.2
 
     0.1 Initial setup: pan, zoom, new map feature, simple sphere drawing,
         normal or heights view
     0.2 Map Update:
-=>      0.2.1   Loading and saving maps
-        0.2.2   Importing and exporting maps
+        0.2.1   Loading and saving maps
+=>      0.2.2   Importing and exporting maps
         0.2.3   Map info UI and more map meta informations:
                 name, creation date, last edit date
     0.3 Canvas Update:
