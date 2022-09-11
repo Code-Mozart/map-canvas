@@ -9,7 +9,7 @@ to get more realistic terrain.
 The current version is ```v0.1.0``` Each version will be available in its respective branch.
 
 ## Installation
-Simply download/clone this repository
+Simply download/clone this repository.
 
 ## How to run it?
 Just open ```index.html``` in your favorite web browser.
